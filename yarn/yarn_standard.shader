@@ -14,7 +14,7 @@ Shader "yarn"
         _WarpAndWeft("Warp And Weft", 2D) = "white" {}
         _Judge("Judge", 2D) = "white"{}
         _FabricScatterColor("Fabric Scatter Color", Color) = (1,1,1,1)
-        _FabricScatterScale("Fabric Scatter Color", Range(0,1)) = 1
+        _FabricScatterScale("Fabric Scatter Scale", Range(0,1)) = 1
         _Anistropy("Anistropy", Range(-1,1)) = -0.743
         _SpecMag("specmag", range(0,20)) = 5
         //_Alpha("Alpha", 2D) = "white" {}

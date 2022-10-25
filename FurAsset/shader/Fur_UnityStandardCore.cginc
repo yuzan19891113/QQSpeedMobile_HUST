@@ -13,7 +13,7 @@
     #include "UnityPBSLighting.cginc"
     #include "AutoLight.cginc"
 
-    #include "Fur_newmodel.cginc"
+    // #include "Fur_newmodel.cginc"
     #include "Fur_UnityStandardInput.cginc"
     #include "Fur_BRDF.cginc"
     //-------------------------------------------------------------------------------------
@@ -277,9 +277,10 @@
         #if _HAIR 
             half3 TangentDir = half3(sqrt(1 - _TangentDir * _TangentDir) ,_TangentDir, 0);
             o.tangentWorld = NormalizePerPixelNormal(normalize(tangentToWorld[0].xyz) * TangentDir.x + normalize(tangentToWorld[1].xyz) * TangentDir.y) * facing;
-        #elif _TENLAYERS
-            half3 TangentDir = half3(sqrt(1 - _TangentDir * _TangentDir) ,_TangentDir, 0);
-            o.tangentWorld = NormalizePerPixelNormal(normalize(tangentToWorld[0].xyz) * TangentDir.x + normalize(tangentToWorld[1].xyz) * TangentDir.y) * facing;
+        #elif _TENLAYERS || _FUR
+            // half3 TangentDir = half3(sqrt(1 - _TangentDir * _TangentDir) ,_TangentDir, 0);
+            // o.tangentWorld = NormalizePerPixelNormal(normalize(tangentToWorld[0].xyz) * TangentDir.x + normalize(tangentToWorld[1].xyz) * TangentDir.y) * facing;
+            o.tangentWorld=tangentToWorld[2].xyz;
         #else
             o.tangentWorld = tangentToWorld[0].xyz;
         #endif
@@ -424,13 +425,13 @@
 
             // half3 direction = lerp(v.normal, _ForceMapScale*forcenormal + v.normal * (1 - _ForceMapScale), FUR_OFFSET);
             half3 turbulent=_ForceMapScale*forcenormal+ (-v.tangent)  * (1 - _ForceMapScale);
-
-            half3 direction = lerp(v.normal, _ForceMapScale*(turbulent) + v.normal * (1 - _ForceMapScale), FUR_OFFSET);
+            half3 tipdir=lerp(turbulent,v.normal,1-_ForceMapScale);
+            half3 direction = lerp(v.normal, tipdir, FUR_OFFSET);
 
             //physically rotation********************************************************************
 
-            // half3 goaldir=normalize(_Gravity);
-            // direction=(1-_GravityStrength)*direction+_GravityStrength*goaldir;
+            half3 goaldir=normalize(_Gravity);
+            direction=(1-_GravityStrength)*direction+_GravityStrength*goaldir;
             // if(_GravityStrength>0)
             // {direction=lerp(direction,v.tangent,_GravityStrength);}
             // else
@@ -439,17 +440,17 @@
             //end************************************************************************************
 
             //physically rotation********************************************************************
-            half3 rotateWorld=mul(unity_ObjectToWorld,float4(0,1,0,1)).xyz;//y-rotation
+            // half3 rotateWorld=mul(unity_ObjectToWorld,float4(0,1,0,1)).xyz;//y-rotation
 
-            half3 pointTo=float3(v.vertex.x-rotateWorld.x,0,v.vertex.z-rotateWorld.z);
+            // half3 pointTo=float3(v.vertex.x-rotateWorld.x,0,v.vertex.z-rotateWorld.z);
 
-            half3 rotateDir=normalize(cross(float3(0,1,0),pointTo));
-            //use fur_offset to lerp your scale
-            //use sqrt to adjust the action of fur's roots
-            if(_GravityStrength>0)
-            {direction=lerp(direction,lerp(direction,rotateDir,_GravityStrength),FUR_OFFSET);}
-            else
-            {direction=lerp(direction,lerp(direction,-rotateDir,-_GravityStrength),FUR_OFFSET);}
+            // half3 rotateDir=normalize(cross(float3(0,1,0),pointTo));
+            // //use fur_offset to lerp your scale
+            // //use sqrt to adjust the action of fur's roots
+            // if(_GravityStrength>0)
+            // {direction=lerp(direction,lerp(direction,rotateDir,_GravityStrength),FUR_OFFSET);}
+            // else
+            // {direction=lerp(direction,lerp(direction,-rotateDir,-_GravityStrength),FUR_OFFSET);}
             //end************************************************************************************
 
             direction=normalize(direction);
@@ -477,12 +478,15 @@
         o.eyeVec = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
         float3 normalWorld = UnityObjectToWorldNormal(v.normal);
         #ifdef _TANGENT_TO_WORLD
-            float4 tangentWorld = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
+            //float4 tangentWorld = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
 
-            float3x3 tangentToWorld = CreateTangentToWorldPerVertex(normalWorld, tangentWorld.xyz, tangentWorld.w);
-            o.tangentToWorldAndPackedData[0].xyz = tangentToWorld[0];
-            o.tangentToWorldAndPackedData[1].xyz = tangentToWorld[1];
-            o.tangentToWorldAndPackedData[2].xyz = tangentToWorld[2];
+            //float3x3 tangentToWorld = CreateTangentToWorldPerVertex(normalWorld, tangentWorld.xyz, tangentWorld.w);
+
+            //transform matrix 
+            o.tangentToWorldAndPackedData[0].xyz = half3(1,0,0);//random value
+            o.tangentToWorldAndPackedData[1].xyz = half3(0,1,0);
+            //o.tangentToWorldAndPackedData[2].xyz = tangentToWorld[2];
+            o.tangentToWorldAndPackedData[2].xyz = UnityObjectToWorldNormal(direction);
         #else
             o.tangentToWorldAndPackedData[0].xyz = 0;
             o.tangentToWorldAndPackedData[1].xyz = 0;
@@ -505,7 +509,7 @@
         UNITY_TRANSFER_FOG(o,o.pos);
         return o;
     }
-
+    //fragment Shader
     half4 fragForwardBaseInternal (VertexOutputForwardBase i, half FUR_OFFSET = 0)
     {
         UNITY_APPLY_DITHER_CROSSFADE(i.pos.xy);
@@ -526,12 +530,12 @@
         UnityGI gi = FragmentGI (s, occlusion, i.ambientOrLightmapUV, atten, mainLight);
 
         
-        half4 anisoMap = tex2D(_AnisoMap, TRANSFORM_TEX(i.tex.xy, _AnisoMap));
+        //half4 anisoMap = tex2D(_AnisoMap, TRANSFORM_TEX(i.tex.xy, _AnisoMap));
 
         #if defined(_BRDF)
-            half4 c = FUR_BRDF_PBS(s.diffColor, s.specColor, s.oneMinusReflectivity, s.smoothness, s.normalWorld, -s.eyeVec, gi.light, gi.indirect, s.tangentWorld, anisoMap.rg);
+            half4 c = FUR_BRDF_PBS(s.diffColor, s.specColor, s.oneMinusReflectivity, s.smoothness, s.normalWorld, -s.eyeVec, gi.light, gi.indirect, s.tangentWorld);
         #elif defined(_KK)
-            half4 c = KajiyaFurShading(s.diffColor,s.specColor,s.smoothness,-s.eyeVec,s.tangentWorld,s.normalWorld,gi.light,gi.indirect,anisoMap.rg);
+            half4 c = KajiyaFurShading(s.diffColor,s.specColor,s.smoothness,-s.eyeVec,s.tangentWorld,s.normalWorld,gi.light,gi.indirect);
         #endif
 
         c.rgb += Emission(i.tex.xy);
@@ -553,11 +557,6 @@
 
             c.rgb*=pow(max(FUR_OFFSET,0.2),_AO);
 
-            //alpha process
-
-            // if(FUR_OFFSET>0.06)
-            // c.a = (1 - FUR_OFFSET*FUR_OFFSET)*threshold;
-            // else
             c.a = (1 - FUR_OFFSET*FUR_OFFSET);
 
             //EdgeFade

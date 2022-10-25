@@ -26,7 +26,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 0, y: 0}
+        m_Scale: {x: 20, y: 20}
         m_Offset: {x: 0, y: 0}
     - _DetailMask:
         m_Texture: {fileID: 0}
@@ -73,7 +73,7 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _Denier: 20
-    - _Density: 50
+    - _Density: 40
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _FabricScatterScale: 1

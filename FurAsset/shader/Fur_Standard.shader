@@ -1,7 +1,7 @@
 Shader "Fur_Standard"{
     Properties{
         [Enum(PBR,0,KajiyaKay,1)] _RenderChoice("Render Choice",Float)=0
-
+        [Enum(TenLayers,0,TwentyLayers,1)] _LayerChoice("LayerNumber Choice",Int)=0
         _Color("Color", Color) = (1,1,1,1)
 
         _TipColor("Tip Color",Color)=(1,1,1,1)

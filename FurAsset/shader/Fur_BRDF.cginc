@@ -4,7 +4,7 @@
     #include "UnityCG.cginc"
     #include "UnityStandardConfig.cginc"
     #include "UnityLightingCommon.cginc"
-    #if _TENLAYERS
+    #if 1
         
         inline float FabricD (float NdotH, float roughness)
         {
@@ -56,22 +56,25 @@
         }
         half4 FUR_BRDF_PBS (half3 diffColor, half3 specColor, half oneMinusReflectivity, half smoothness,
         float3 normal, float3 viewDir,
-        UnityLight light, UnityIndirect gi,float3 tangentWorld = float3(0, 0, 1), half2 anisoCtrl = half2(1, 1))
+        UnityLight light, UnityIndirect gi,float3 tangentWorld = float3(0, 0, 1))
         {
             float perceptualRoughness = SmoothnessToPerceptualRoughness (smoothness);
             float3 halfDir = Unity_SafeNormalize (float3(light.dir) + viewDir);
             
+            //normal is useless,now we use tangent to calculate the fake normal
 
-            half nv = dot(normal, viewDir);  
-            
-            half nl = saturate(dot(normal, light.dir));
-            float nh = saturate(dot(normal, halfDir));
+            // half nv = dot(normal, viewDir);  
+            // half nl = saturate(dot(normal, light.dir));
+            // float nh = saturate(dot(normal, halfDir));
+            half nv = sqrt(1-dot(tangentWorld, viewDir)*dot(tangentWorld, viewDir));  
+            half nl = sqrt(1-dot(tangentWorld, light.dir)*dot(tangentWorld, light.dir));
+            float nh = sqrt(1-dot(tangentWorld, halfDir)*dot(tangentWorld, halfDir));
 
             half lv = saturate(dot(light.dir, viewDir));
             half lh = saturate(dot(light.dir, halfDir));
 
             // Diffuse term
-            half diffuseTerm = nl;DisneyDiffuse(nv, nl, lh, perceptualRoughness) * nl;
+            half diffuseTerm = DisneyDiffuse(nv, nl, lh, perceptualRoughness) * nl;
 
             // Specular term
             // HACK: theoretically we should divide diffuseTerm by Pi and not multiply specularTerm!
@@ -83,7 +86,10 @@
             float D = GGXTerm (nh, roughness);
 
             //Aniso Specular
-            D = AnisoD(smoothness, normal, tangentWorld, halfDir, nh, D, anisoCtrl);
+
+            //because we have used tangent to calculate anisotropic,so we don't use this D
+
+            //D = AnisoD(smoothness, normal, tangentWorld, halfDir, nh, D, anisoCtrl);
 
             float VxD= roughness > 0.99 ? 1 * FabricD (nh, roughness) : V * D;
 
@@ -123,7 +129,7 @@
             //Standard Color
 
             half3 color =   diffColor * (gi.diffuse + light.color * diffuseTerm)
-            + specularTerm * light.color * FresnelTerm (specColor, lh)
+            + 1*specularTerm * light.color * FresnelTerm (specColor, lh)
             + surfaceReduction * gi.specular * FresnelLerp (specColor, grazingTerm, nv);
 
             return half4(color, 1);
