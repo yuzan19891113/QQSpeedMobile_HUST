@@ -459,7 +459,7 @@
             //use GrowthMap to control the length of fur
             fixed length_control=tex2Dlod(_FurGrowthMap,float4(TRANSFORM_TEX(o.tex.xy,_FurGrowthMap),0,0)).r;
             //multiply theta to narrow the gap between layers
-            v.vertex.xyz += direction * _FurLength*pow(length_control,_FurGrowth) * FUR_OFFSET*theta*theta;
+            v.vertex.xyz += direction * _FurLength*pow(length_control,_FurGrowth) * FUR_OFFSET *theta*theta;
         #endif 
 
         float4 posWorld = mul(unity_ObjectToWorld, v.vertex);
@@ -510,7 +510,7 @@
         return o;
     }
     //fragment Shader
-    half4 fragForwardBaseInternal (VertexOutputForwardBase i, half FUR_OFFSET = 0)
+    half4 fragForwardBaseInternal (VertexOutputForwardBase i, half FUR_OFFSET = 0,half FUR_DENSITY = 1)
     {
         UNITY_APPLY_DITHER_CROSSFADE(i.pos.xy);
 
@@ -550,6 +550,26 @@
 
         UNITY_APPLY_FOG(i.fogCoord, c.rgb);
 
+        #if _FUR_OPT
+
+            fixed alpha = tex2D(_LayerTex, TRANSFORM_TEX(i.tex.zw, _LayerTex)).r;
+
+            //float cut_offset = ();
+            alpha =step(lerp(_Cutoff, _CutoffEnd, FUR_OFFSET), alpha);
+
+            c.rgb*=pow(max(FUR_OFFSET,0.2),_AO);
+
+            c.a = (1 - FUR_OFFSET * FUR_OFFSET) /  FUR_DENSITY;
+
+            //EdgeFade
+            c.a += dot(-s.eyeVec, s.normalWorld) - _EdgeFade;
+
+            c.a = max(0, c.a);
+            c.a *= alpha;
+
+            c.a = clamp(c.a, 0.f, 1.f);
+            return c;
+        #else
         #if _FUR
             fixed alpha = tex2D(_LayerTex, TRANSFORM_TEX(i.tex.zw, _LayerTex)).r;
 
@@ -557,15 +577,19 @@
 
             c.rgb*=pow(max(FUR_OFFSET,0.2),_AO);
 
-            c.a = (1 - FUR_OFFSET*FUR_OFFSET);
+            c.a = 1 - FUR_OFFSET*FUR_OFFSET;
+            //c.a = 1;
 
             //EdgeFade
             c.a += dot(-s.eyeVec, s.normalWorld) - _EdgeFade;
 
             c.a = max(0, c.a);
             c.a *= alpha;
+            //return half4(0.,0.,0.,c.a);
             return c;
-        #endif
+        #endif //_FUR
+
+        #endif //_FUR_OPT
 
         return OutputForward(c, s.alpha);
     }

@@ -61,6 +61,7 @@ namespace UnityEditor
             public static GUIContent specularcolorText = EditorGUIUtility.TrTextContent("高光颜色", "SpecularColor");
             public static GUIContent floatmapText = EditorGUIUtility.TrTextContent("Float Map", "Float Map");
             public static GUIContent noiseText = EditorGUIUtility.TrTextContent("Noise Map", "Noise Map");
+            public static GUIContent rampText = EditorGUIUtility.TrTextContent("Ramp Map", "Ramp Map");
             public static GUIContent specularmagText = EditorGUIUtility.TrTextContent("高光强度", "SpecularMag");
             //public static GUIContent specularrangeText = EditorGUIUtility.TrTextContent("高光平滑度", "SpecularRange");
             public static GUIContent specularshiftText = EditorGUIUtility.TrTextContent("高光位置偏移", "SpecularShift");
@@ -98,6 +99,7 @@ namespace UnityEditor
         MaterialProperty uvSetSecondary = null;
         MaterialProperty floatmap = null;
         MaterialProperty noisemap = null;
+        MaterialProperty rampmap = null;
         MaterialProperty specularmag = null;
         //MaterialProperty specularrange = null;
         MaterialProperty specularshift = null;
@@ -148,6 +150,7 @@ namespace UnityEditor
             uvSetSecondary = FindProperty("_UVSec", props);
             floatmap = FindProperty("_FloatMap", props);
             noisemap = FindProperty("_NoiseMap", props);
+            //rampmap = FindProperty("_RampMap", props);
             specColor = FindProperty("_SpecularColor", props);
             specularmag = FindProperty("_SpecularMag", props);
             //specularrange = FindProperty("_SpecularRange", props);
@@ -228,6 +231,7 @@ namespace UnityEditor
                 GUILayout.Label(Styles.SilkText, EditorStyles.boldLabel);
                 m_MaterialEditor.ShaderProperty(floatmap, Plus.floatmapText);
                 m_MaterialEditor.ShaderProperty(noisemap, Plus.noiseText);
+                //m_MaterialEditor.ShaderProperty(rampmap, Plus.rampText);
                 m_MaterialEditor.ShaderProperty(specularmag, Plus.specularmagText);
                 //m_MaterialEditor.ShaderProperty(specularrange, Plus.specularrangeText);
                 m_MaterialEditor.ShaderProperty(specularshift, Plus.specularshiftText);

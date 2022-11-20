@@ -1,4 +1,4 @@
-Shader "Fur_Standard"{
+﻿Shader "QF/Character/High/Tech/Character_Tech_Fur_Standard_Opt"{
     Properties{
         [Enum(PBR,0,KajiyaKay,1)] _RenderChoice("Render Choice",Float)=0
         [Enum(TenLayers,0,TwentyLayers,1)] _LayerChoice("LayerNumber Choice",Int)=0
@@ -96,6 +96,7 @@ Shader "Fur_Standard"{
 
         #define _FABRIC 1
         #define _FUR 1
+        #define _FUR_OPT 1
 
         #define _TENLAYERS 1
         
@@ -180,216 +181,13 @@ Shader "Fur_Standard"{
             ENDCG
         }
 
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer1
-            #pragma fragment fragBase_FurLayer1
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
 
         Pass
         {
             Name "FORWARD"
             Tags{ "LightMode" = "ForwardBase" }
 
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer2
-            #pragma fragment fragBase_FurLayer2
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
-
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer3
-            #pragma fragment fragBase_FurLayer3
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
-
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer4
-            #pragma fragment fragBase_FurLayer4
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
-
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer5
-            #pragma fragment fragBase_FurLayer5
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
-
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer6
-            #pragma fragment fragBase_FurLayer6
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
-
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
+            //Blend[_SrcBlend][_DstBlend]
             ZWrite[_ZWrite]
 
             CGPROGRAM
@@ -651,6 +449,7 @@ Shader "Fur_Standard"{
 
             ENDCG
         }
+     
         Pass
         {
             Name "FORWARD"
@@ -717,139 +516,6 @@ Shader "Fur_Standard"{
 
             ENDCG
         }
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer17
-            #pragma fragment fragBase_FurLayer17
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer18
-            #pragma fragment fragBase_FurLayer18
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer19
-            #pragma fragment fragBase_FurLayer19
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
-        Pass
-        {
-            Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
-
-            Blend[_SrcBlend][_DstBlend]
-            ZWrite[_ZWrite]
-
-            CGPROGRAM
-            //#pragma target 5.0
-
-            // -------------------------------------
-            #pragma shader_feature _ _TIPLOCATEMAP
-            #pragma shader_feature _BRDF _KK
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-
-            #pragma vertex vertBase_FurLayer20
-            #pragma fragment fragBase_FurLayer20
-            #include "Fur_UnityStandardCoreForward.cginc"
-
-            ENDCG
-        }
-        
         
 
         // ------------------------------------------------------------------

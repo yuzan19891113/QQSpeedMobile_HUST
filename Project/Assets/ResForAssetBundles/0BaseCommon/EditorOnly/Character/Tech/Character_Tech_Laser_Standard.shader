@@ -1,4 +1,4 @@
-Shader "Laser_Standard"
+Shader "QF/Character/High/Tech/Character_Tech_Laser_Standard"
 {
     Properties
     {

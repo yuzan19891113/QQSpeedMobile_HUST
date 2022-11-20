@@ -35,7 +35,7 @@ namespace UnityEditor
         {
             public static GUIContent uvSetLabel = EditorGUIUtility.TrTextContent("UV Set");
 
-            public static GUIContent albedoText = EditorGUIUtility.TrTextContent("Albedo", "Albedo (RGB) and Transparency (A)");
+            public static GUIContent albedoText = EditorGUIUtility.TrTextContent("颜色", "裘皮材质表面颜色 (RGB) 和透明度 (A)");
             public static GUIContent alphaCutoffText = EditorGUIUtility.TrTextContent("Alpha Cutoff", "Threshold for alpha cutoff");
             public static GUIContent specularMapText = EditorGUIUtility.TrTextContent("Specular", "Specular (RGB) and Smoothness (A)");
             public static GUIContent metallicMapText = EditorGUIUtility.TrTextContent("Metallic", "Metallic (R) and Smoothness (A)");
@@ -53,13 +53,13 @@ namespace UnityEditor
             public static GUIContent detailNormalMapText = EditorGUIUtility.TrTextContent("Normal Map", "Normal Map");
             // public static GUIContent rimPowerText = EditorGUIUtility.TrTextContent("Rim Power", "Rim Power");
             // public static GUIContent denierText = EditorGUIUtility.TrTextContent("Denier", "Denier");
-            public static GUIContent layerMapText = EditorGUIUtility.TrTextContent("Layer Map", "Noise texture used to control the growth of fur");
-            public static GUIContent furLengthText = EditorGUIUtility.TrTextContent("Fur Length", "control fur length");
-            public static GUIContent CutoffText = EditorGUIUtility.TrTextContent("Cutoff", "how thick");
-            public static GUIContent CutoffEndText = EditorGUIUtility.TrTextContent("CutoffEnd", "how thick they are at the end");
-            public static GUIContent EdgeFadeText = EditorGUIUtility.TrTextContent("EdgeFade", "EdgeFade");
-            public static GUIContent ForceDirectionText = EditorGUIUtility.TrTextContent("Force Direction", "the direction of force");
-            public static GUIContent ForceScaleText = EditorGUIUtility.TrTextContent("Force Scale", "ForceScale");
+            public static GUIContent layerMapText = EditorGUIUtility.TrTextContent("毛发分布贴图", "决定毛发生长位置的分布贴图");
+            public static GUIContent furLengthText = EditorGUIUtility.TrTextContent("毛发长度", "控制材质表面毛发的长度");
+            public static GUIContent CutoffText = EditorGUIUtility.TrTextContent("截断起点", "控制毛发根部被截断的程度，值越大根部截断的越多");
+            public static GUIContent CutoffEndText = EditorGUIUtility.TrTextContent("截断终点", "控制毛发发梢被截断的程度，值越大末梢截断的越多");
+            public static GUIContent EdgeFadeText = EditorGUIUtility.TrTextContent("边缘淡化参数", "控制毛发材质边缘部分的淡化程度以达到降低噪声的目的");
+            public static GUIContent ForceDirectionText = EditorGUIUtility.TrTextContent("外力方向", "控制毛皮材质的外力方向");
+            public static GUIContent ForceScaleText = EditorGUIUtility.TrTextContent("外力大小", "控制毛发受外力的大小");
             public static GUIContent SrcBlendText = EditorGUIUtility.TrTextContent("SrcBlend", "");
             public static GUIContent DstBlendText = EditorGUIUtility.TrTextContent("DstBlend", "");
             public static GUIContent ZwriteText = EditorGUIUtility.TrTextContent("Zwrite", "");
@@ -71,18 +71,18 @@ namespace UnityEditor
             public static GUIContent AnisoSpec2Text = EditorGUIUtility.TrTextContent("AnisoSpec2", "");
             public static GUIContent TS1Text = EditorGUIUtility.TrTextContent("TangentShift1", "");
             public static GUIContent TS2Text = EditorGUIUtility.TrTextContent("TangentShift2", "");
-            public static GUIContent AOText = EditorGUIUtility.TrTextContent("Ambient Occlusion", "");
+            public static GUIContent AOText = EditorGUIUtility.TrTextContent("毛皮环境光遮蔽", "控制毛皮根部的环境光遮蔽");
             public static GUIContent SC1 = EditorGUIUtility.TrTextContent("Specular Color 1", "");
             public static GUIContent SC2 = EditorGUIUtility.TrTextContent("Specular Color 2", "");
-            public static GUIContent FGText = EditorGUIUtility.TrTextContent("Fur Height Control Scale", "");
-            public static GUIContent FGMText = EditorGUIUtility.TrTextContent("Fur Height Map", "");
-            public static GUIContent ForeMapText = EditorGUIUtility.TrTextContent("Force Map", "");
-            public static GUIContent ForceMapScaleText = EditorGUIUtility.TrTextContent("Force Map Scale", "");
+            public static GUIContent FGText = EditorGUIUtility.TrTextContent("高度图大小", "控制高度图作用的剧烈程度");
+            public static GUIContent FGMText = EditorGUIUtility.TrTextContent("高度图", "控制毛皮的高度");
+            public static GUIContent ForeMapText = EditorGUIUtility.TrTextContent("外力贴图", "控制材质表面每一点所受外力方向");
+            public static GUIContent ForceMapScaleText = EditorGUIUtility.TrTextContent("外力贴图大小", "控制外力贴图作用程度的大小");
 
-            public static GUIContent tipcolorText = EditorGUIUtility.TrTextContent("Tip Color", "choose the color of the fur tip");
+            public static GUIContent tipcolorText = EditorGUIUtility.TrTextContent("斑点颜色", "选择毛皮表面的斑点颜色");
             public static GUIContent tipcontrolText = EditorGUIUtility.TrTextContent("Tip Control", "control the strength of the tip color");
             public static GUIContent tipchoiceText = EditorGUIUtility.TrTextContent("Tip Choice", "whether add tip color");
-            public static GUIContent tipLocateText = EditorGUIUtility.TrTextContent("Tip Locate Map", "Locate area where have tip color");
+            public static GUIContent tipLocateText = EditorGUIUtility.TrTextContent("斑点位置贴图", "决定了材质表面哪些位置会出现斑点");
             public static GUIContent scattercolorText = EditorGUIUtility.TrTextContent("Fabric Scatter Color", "");
             public static GUIContent scatterscaleText = EditorGUIUtility.TrTextContent("Fabric Scatter Scale", "");
 

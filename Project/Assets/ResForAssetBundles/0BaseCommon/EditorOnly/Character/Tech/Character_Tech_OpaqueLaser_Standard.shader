@@ -1,23 +1,9 @@
-// Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
-
-Shader "yarn"
+Shader "QF/Character/High/Tech/Character_Tech_OpaqueLaser_Standard"
 {
     Properties
     {
         _Color("Color", Color) = (1,1,1,1)
         _MainTex("Albedo", 2D) = "white" {}
-
-        _RimPower("Rim Power", Range(0,1000)) = 1
-        _Denier("Denier", Range(0,200)) = 1
-        _Density("Density", Range(1,200)) = 1
-        _Specular("Specular", 2D) = "white" {}
-        _WarpAndWeft("Warp And Weft", 2D) = "white" {}
-        _Judge("Judge", 2D) = "white"{}
-        _FabricScatterColor("Fabric Scatter Color", Color) = (1,1,1,1)
-        _FabricScatterScale("Fabric Scatter Scale", Range(0,1)) = 1
-        _Anistropy("Anistropy", Range(-1,1)) = -0.743
-        _SpecMag("specmag", range(0,20)) = 5
-        //_Alpha("Alpha", 2D) = "white" {}
 
         _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
 
@@ -57,6 +43,27 @@ Shader "yarn"
         [HideInInspector] _SrcBlend ("__src", Float) = 1.0
         [HideInInspector] _DstBlend ("__dst", Float) = 0.0
         [HideInInspector] _ZWrite ("__zw", Float) = 1.0
+
+        //Laser Config
+        _Saturation("Saturation", Range(0, 1)) = 0.5
+		_Brightness("Brightness", Range(0, 2)) = 1
+        //
+        [Enum(OneMinusCos, 0, Sin, 1)] _CurveType("CurveType", Float) = 0
+        //
+        [Enum(Manual, 0, Custom, 1)] _ParamsMode("ParamsMode", Float) = 0
+        //Ⱦɫ��
+		_LightSpan("LightSpan", Range(0.2, 5)) = 1
+        //�����
+		_LightOffset("LightOffset", Range(0, 1)) = 0
+        //
+        _HueMap("Thickness", 2D) = "white" {}
+        //
+        _LightOffset_Map("LightOffset_Map", 2D) = "black" {}
+        //
+        [ToggleOff] _UseAnisoColor("UseAnisoColor", Float) = 0.0
+        [Enum(Value, 0, Map, 1)] _AnisoMethod("AnisoMethod", Float) = 0
+        _ColorDir("ColorDir", Range(0, 180)) = 0
+        _ColorDirMap("ColorDirMap", 2D) = "black" {}
     }
 
     CGINCLUDE
@@ -66,65 +73,18 @@ Shader "yarn"
     SubShader
     {
         Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
-        LOD 30
-        CGINCLUDE
-        
-        #define _Fabric
+        LOD 300
 
-        half3 _FabricScatterColor;
-        half  _FabricScatterScale;
-        ENDCG
-        //ZWrite off
 
         // ------------------------------------------------------------------
         //  Base forward pass (directional light, emission, lightmaps, ...)
         Pass
         {
-            Name "BACK"
-            Tags { "LightMode" = "ForwardBase"}
-            Cull front
+            Name "FORWARD"
+            Tags { "LightMode" = "ForwardBase" }
 
             Blend [_SrcBlend] [_DstBlend]
             ZWrite [_ZWrite]
-            ZTest LEqual
-            //ZWrite On
-
-            CGPROGRAM
-            #pragma target 3.0
-
-            // -------------------------------------
-
-            #pragma shader_feature_local _NORMALMAP
-            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature_fragment _EMISSION
-            #pragma shader_feature_local _METALLICGLOSSMAP
-            #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature_local_fragment _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature_local _PARALLAXMAP
-
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-            // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
-            //#pragma multi_compile _ LOD_FADE_CROSSFADE
-
-            #pragma vertex vertBase
-            #pragma fragment fragBase
-            #include "yarn_UnityStandardCoreForward_back.cginc"
-
-            ENDCG
-        }
-        Pass
-        {
-            Name "FRONT"
-            Tags { "LightMode" = "ForwardBase"}
-            Cull back
-
-            Blend [_SrcBlend] [_DstBlend]
-            ZWrite [_ZWrite]
-            ZTest LEqual
-            Zwrite On
 
             CGPROGRAM
             #pragma target 3.0
@@ -140,6 +100,10 @@ Shader "yarn"
             #pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature_local_fragment _GLOSSYREFLECTIONS_OFF
             #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature _MANUALCONTROL _AUTOCONTROL
+            #pragma shader_feature_local _ANISOCOLOR
+            #pragma shader_feature_local _COLORDIRMAP
+            #pragma shader_feature_local _SINCONTROL
 
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
@@ -149,7 +113,7 @@ Shader "yarn"
 
             #pragma vertex vertBase
             #pragma fragment fragBase
-            #include "yarn_UnityStandardCoreForward.cginc"
+            #include "OpaqueLaser_UnityStandardCoreForward.cginc"
 
             ENDCG
         }
@@ -177,6 +141,10 @@ Shader "yarn"
             #pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature_local_fragment _DETAIL_MULX2
             #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature _MANUALCONTROL _AUTOCONTROL
+            #pragma shader_feature_local _ANISOCOLOR
+            #pragma shader_feature_local _COLORDIRMAP
+            #pragma shader_feature_local _SINCONTROL
 
             #pragma multi_compile_fwdadd_fullshadows
             #pragma multi_compile_fog
@@ -185,7 +153,7 @@ Shader "yarn"
 
             #pragma vertex vertAdd
             #pragma fragment fragAdd
-            #include "UnityStandardCoreForward.cginc"
+            #include "OpaqueLaser_UnityStandardCoreForward.cginc"
 
             ENDCG
         }
@@ -241,6 +209,10 @@ Shader "yarn"
             #pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature_local_fragment _DETAIL_MULX2
             #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature _MANUALCONTROL _AUTOCONTROL
+            #pragma shader_feature_local _ANISOCOLOR
+            #pragma shader_feature_local _COLORDIRMAP
+            #pragma shader_feature_local _SINCONTROL
 
             #pragma multi_compile_prepassfinal
             #pragma multi_compile_instancing
@@ -250,7 +222,7 @@ Shader "yarn"
             #pragma vertex vertDeferred
             #pragma fragment fragDeferred
 
-            #include "UnityStandardCore.cginc"
+            #include "OpaqueLaser_UnityStandardCore.cginc"
 
             ENDCG
         }
@@ -403,5 +375,6 @@ Shader "yarn"
 
 
     FallBack "VertexLit"
-    CustomEditor "yarn_StandardShaderGUI"
+    CustomEditor "Laser_StandardShaderGUI"
 }
+

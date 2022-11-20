@@ -66,9 +66,12 @@
             // half nv = dot(normal, viewDir);  
             // half nl = saturate(dot(normal, light.dir));
             // float nh = saturate(dot(normal, halfDir));
-            half nv = sqrt(1-dot(tangentWorld, viewDir)*dot(tangentWorld, viewDir));  
-            half nl = sqrt(1-dot(tangentWorld, light.dir)*dot(tangentWorld, light.dir));
-            float nh = sqrt(1-dot(tangentWorld, halfDir)*dot(tangentWorld, halfDir));
+            
+            //FIX: theoretically this sqrt operation is ok, unforunately without saturate, expression inside will produce value less than 0
+            //     and sqrt will produce nan value cause small black points on screen.  
+            half nv = sqrt(saturate(1-dot(tangentWorld, viewDir)*dot(tangentWorld, viewDir)));  
+            half nl = sqrt(saturate(1-dot(tangentWorld, light.dir)*dot(tangentWorld, light.dir)));
+            float nh = sqrt(saturate(1-dot(tangentWorld, halfDir)*dot(tangentWorld, halfDir)));
 
             half lv = saturate(dot(light.dir, viewDir));
             half lh = saturate(dot(light.dir, halfDir));
