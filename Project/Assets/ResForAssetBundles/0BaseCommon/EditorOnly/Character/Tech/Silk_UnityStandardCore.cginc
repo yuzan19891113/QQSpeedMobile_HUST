@@ -184,10 +184,10 @@ struct FragmentCommonData
     half oneMinusReflectivity, smoothness;
     float3 normalWorld;
     float3 binormal;
-    float3 binormal1;
+    //float3 binormal1;
     float3 eyeVec;
     float3 tangent;
-    float3 tangent1;
+    //float3 tangent1;
     float3 LightDir;
     half noise;
     half alpha;
@@ -273,22 +273,26 @@ inline FragmentCommonData FragmentSetup (inout float4 i_tex, float3 i_eyeVec, ha
     //o.specColor = (255,255,255);
     o.normalWorld = PerPixelWorldNormal(i_tex, tangentToWorld);
     o.eyeVec = NormalizePerPixelNormal(i_eyeVec);
-    o.binormal = tangentToWorld[1];
+    //o.binormal = tangentToWorld[1];
     o.tangent = tangentToWorld[0];
     o.posWorld = i_posWorld;
     o.LightDir = normalize(UnityWorldSpaceLightDir(tangentToWorld[0]));
     o.noise = tex2D(_NoiseMap, i_tex.xy * 50).r;
-    o.noise = 1-0.5*(1-o.noise);
+    o.noise = 0.4*o.noise+0.6;
+    /*if(_GlossEnable){
+        float sm = tex2D(_GlossinessMap, i_tex.xy).r;
+        o.smoothness = sm;
+    }*/
 
     //#if _FLOATMAP
 
-    float3 tangent = tex2D(_FloatMap, i_tex.xy).rgb;
-    tangent = 2 * tangent - 1;
-    tangent.xy = tangent.yx;
-    tangent.x = -tangent.x;
+    //float3 tangent=o.tangent; //= tex2D(_FloatMap, i_tex.xy).rgb;
+    //tangent = 2 * tangent - 1;
+    //tangent.xy = tangent.yx;
+    //tangent.x = -tangent.x;
 
-    float a = _SpecularRotate;
-    float3x3 tangent_rotate = float3x3(cos(a), sin(a), 0,
+    //float a = _SpecularRotate;
+    /*float3x3 tangent_rotate = float3x3(cos(a), sin(a), 0,
                                        sin(a), cos(a), 0,
                                        0,    0,     1);
     tangent = mul(tangent_rotate, tangent);
@@ -296,19 +300,19 @@ inline FragmentCommonData FragmentSetup (inout float4 i_tex, float3 i_eyeVec, ha
 
     tangent = tangent - o.normalWorld * dot(tangent, o.normalWorld);
     //tangent = tangent + o.normalWorld * o.noise;
-    tangent = normalize(tangent);
-    float3 bitangent = normalize(cross(o.normalWorld, tangent));
+    tangent = normalize(tangent);*/
+    //float3 bitangent = normalize(cross(o.normalWorld, tangent));
 
-    //o.tangent = tangent;
-    //o.binormal = bitangent;
+    o.tangent = normalize(o.tangent);
+    o.binormal = normalize(cross(o.normalWorld, o.tangent));
 
 
-    tangent = mul(tangent_rotate, tangent);
-    tangent = normalize(tangent);
-    bitangent = normalize(cross(o.normalWorld, tangent));
+    //tangent = mul(tangent_rotate, tangent);
+    //tangent = normalize(tangent);
+    //bitangent = normalize(cross(o.normalWorld, tangent));
 
-    o.tangent1 = tangent;
-    o.binormal1 = bitangent;
+    //o.tangent1 = tangent;
+    //o.binormal1 = bitangent;
 
     //#endif
     
@@ -502,7 +506,7 @@ half4 fragForwardBaseInternal (VertexOutputForwardBase i)
     s.binormal =  normalize(normalize(s.binormal + s.tangent*_SpecularRotate)+ s.normalWorld*_SpecularShift);
     //s.tangent = normalize(cross(s.normalWorld, s.binormal));
 
-    half4 c = Ramp_Anisotropy (s.diffColor, s.specColor, s.oneMinusReflectivity, s.smoothness, s.alpha, s.normalWorld, -s.eyeVec, s.tangent, s.binormal, s.tangent1, s.binormal1, _RampAniValue, _SpecularMag, s.noise, gi.light, gi.indirect);
+    half4 c = Ramp_Anisotropy (s.diffColor, s.specColor, s.oneMinusReflectivity, s.smoothness, s.alpha, s.normalWorld, -s.eyeVec, s.tangent, s.binormal, _RampAniValue, _SpecularMag, s.noise, gi.light, gi.indirect);
     //half4 c = UNITY_BRDF_PBS (s.diffColor, s.specColor, s.oneMinusReflectivity, s.smoothness, s.normalWorld, -s.eyeVec, gi.light, gi.indirect);
     
     c.rgb += Emission(i.tex.xy);

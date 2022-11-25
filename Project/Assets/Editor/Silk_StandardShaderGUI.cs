@@ -58,15 +58,18 @@ namespace UnityEditor
         }
         public static class Plus
         {
-            public static GUIContent specularcolorText = EditorGUIUtility.TrTextContent("高光颜色", "SpecularColor");
-            public static GUIContent floatmapText = EditorGUIUtility.TrTextContent("Float Map", "Float Map");
-            public static GUIContent noiseText = EditorGUIUtility.TrTextContent("Noise Map", "Noise Map");
-            public static GUIContent rampText = EditorGUIUtility.TrTextContent("Ramp Map", "Ramp Map");
-            public static GUIContent specularmagText = EditorGUIUtility.TrTextContent("高光强度", "SpecularMag");
+            public static GUIContent specularcolorText = EditorGUIUtility.TrTextContent("高光颜色", "高光颜色用于调节高光主要颜色");
+            public static GUIContent SecondSpecularEnable = EditorGUIUtility.TrTextContent("启用双向高光","是否启用双向高光");
+            public static GUIContent specularcolorText2 = EditorGUIUtility.TrTextContent("第二层高光颜色","调节第二层的高光颜色");
+            //public static GUIContent floatmapText = EditorGUIUtility.TrTextContent("Float Map", "Float Map");
+            public static GUIContent noiseText = EditorGUIUtility.TrTextContent("高光噪声", "向表面高光添加噪声");
+            //public static GUIContent GlossEnableText = EditorGUIUtility.TrTextContent("启用Glossiness贴图", "GlossEnable");
+            //public static GUIContent GlossText = EditorGUIUtility.TrTextContent("Glossiness Map", "Glossiness Map");
+            public static GUIContent specularmagText = EditorGUIUtility.TrTextContent("高光强度", "高光强度用于调节高光的整体亮度，可以根据需求进行调节");
             //public static GUIContent specularrangeText = EditorGUIUtility.TrTextContent("高光平滑度", "SpecularRange");
-            public static GUIContent specularshiftText = EditorGUIUtility.TrTextContent("高光位置偏移", "SpecularShift");
-            public static GUIContent specularrotateText = EditorGUIUtility.TrTextContent("高光旋转偏移", "SpecularRotate");
-            public static GUIContent rampaniText = EditorGUIUtility.TrTextContent("各向异性系数","RampAniValue");
+            //public static GUIContent specularshiftText = EditorGUIUtility.TrTextContent("高光位置偏移", "SpecularShift");
+            //public static GUIContent specularrotateText = EditorGUIUtility.TrTextContent("高光旋转偏移", "SpecularRotate");
+            public static GUIContent rampaniText = EditorGUIUtility.TrTextContent("各向异性系数","调节材质表面的各项异性高光的强度以及分布");
             //public static GUIContent smooth1Text = EditorGUIUtility.TrTextContent("平滑指数1","平滑指数1");
             //public static GUIContent smooth2Text = EditorGUIUtility.TrTextContent("平滑指数2","平滑指数2");
         }
@@ -97,15 +100,19 @@ namespace UnityEditor
         MaterialProperty detailNormalMapScale = null;
         MaterialProperty detailNormalMap = null;
         MaterialProperty uvSetSecondary = null;
-        MaterialProperty floatmap = null;
+        //MaterialProperty floatmap = null;
         MaterialProperty noisemap = null;
-        MaterialProperty rampmap = null;
+        //MaterialProperty GlossEnable = null;
+        //MaterialProperty Glossmap = null;
         MaterialProperty specularmag = null;
         //MaterialProperty specularrange = null;
-        MaterialProperty specularshift = null;
-        MaterialProperty specularrotate = null;
+        //MaterialProperty specularshift = null;
+        //MaterialProperty specularrotate = null;
+        //MaterialProperty intensity = null;
         MaterialProperty rampanivalue = null;
         MaterialProperty specColor = null;
+        MaterialProperty spec2enable = null;
+        MaterialProperty specColor2 = null;
         //MaterialProperty smoothvalue1 = null;
         //MaterialProperty smoothvalue2 = null;
 
@@ -148,14 +155,17 @@ namespace UnityEditor
             detailNormalMapScale = FindProperty("_DetailNormalMapScale", props);
             detailNormalMap = FindProperty("_DetailNormalMap", props);
             uvSetSecondary = FindProperty("_UVSec", props);
-            floatmap = FindProperty("_FloatMap", props);
+            //floatmap = FindProperty("_FloatMap", props);
             noisemap = FindProperty("_NoiseMap", props);
-            //rampmap = FindProperty("_RampMap", props);
+            //GlossEnable = FindProperty("_GlossEnable", props);
+            //Glossmap = FindProperty("_GlossinessMap", props);
             specColor = FindProperty("_SpecularColor", props);
+            spec2enable = FindProperty("_Specular2Enable", props);
+            specColor2 = FindProperty("_SpecularColor2", props);
             specularmag = FindProperty("_SpecularMag", props);
             //specularrange = FindProperty("_SpecularRange", props);
-            specularshift = FindProperty("_SpecularShift", props);
-            specularrotate = FindProperty("_SpecularRotate", props);
+            //specularshift = FindProperty("_SpecularShift", props);
+            //specularrotate = FindProperty("_SpecularRotate", props);
             rampanivalue = FindProperty("_RampAniValue", props);
             //smoothvalue1 = FindProperty("_SmoothValue1", props);
             //smoothvalue2 = FindProperty("_SmoothValue2", props);
@@ -229,14 +239,18 @@ namespace UnityEditor
 
                 m_MaterialEditor.RenderQueueField();
                 GUILayout.Label(Styles.SilkText, EditorStyles.boldLabel);
-                m_MaterialEditor.ShaderProperty(floatmap, Plus.floatmapText);
+                //m_MaterialEditor.ShaderProperty(floatmap, Plus.floatmapText);
                 m_MaterialEditor.ShaderProperty(noisemap, Plus.noiseText);
-                //m_MaterialEditor.ShaderProperty(rampmap, Plus.rampText);
+                //m_MaterialEditor.ShaderProperty(GlossEnable, Plus.GlossEnableText);
+                //m_MaterialEditor.ShaderProperty(Glossmap, Plus.GlossText);
                 m_MaterialEditor.ShaderProperty(specularmag, Plus.specularmagText);
                 //m_MaterialEditor.ShaderProperty(specularrange, Plus.specularrangeText);
-                m_MaterialEditor.ShaderProperty(specularshift, Plus.specularshiftText);
-                m_MaterialEditor.ShaderProperty(specularrotate, Plus.specularrotateText);
+                //m_MaterialEditor.ShaderProperty(specularshift, Plus.specularshiftText);
+                //m_MaterialEditor.ShaderProperty(specularrotate, Plus.specularrotateText);
                 m_MaterialEditor.ShaderProperty(specColor, Plus.specularcolorText);
+                m_MaterialEditor.ShaderProperty(specColor2, Plus.specularcolorText2);
+                m_MaterialEditor.ShaderProperty(spec2enable, Plus.SecondSpecularEnable);
+                //DoSecondSpecular(material);
                 m_MaterialEditor.ShaderProperty(rampanivalue, Plus.rampaniText);
                 //m_MaterialEditor.ShaderProperty(smoothvalue1, Plus.smooth1Text);
                 //m_MaterialEditor.ShaderProperty(smoothvalue2, Plus.smooth2Text);
@@ -335,7 +349,15 @@ namespace UnityEditor
                 m_MaterialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoffText.text, MaterialEditor.kMiniTextureFieldLabelIndentLevel + 1);
             }
         }
-
+        /**
+        void DoSecondSpecular(Material material)
+        {
+            if (m_MaterialEditor.SecondSpecularEnabledProperty())
+            {
+                m_MaterialEditor.ShaderProperty(specColor2, Plus.specularcolorText2);
+            }
+        }
+        **/
         void DoEmissionArea(Material material)
         {
             // Emission for GI?

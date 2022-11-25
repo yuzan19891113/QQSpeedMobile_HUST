@@ -48,23 +48,23 @@ namespace UnityEditor
             public static GUIContent detailMaskText = EditorGUIUtility.TrTextContent("Detail Mask", "Mask for Secondary Maps (A)");
             public static GUIContent detailAlbedoText = EditorGUIUtility.TrTextContent("Detail Albedo x2", "Albedo (RGB) multiplied by 2");
             public static GUIContent detailNormalMapText = EditorGUIUtility.TrTextContent("Normal Map", "Normal Map");
-            public static GUIContent rimPowerText = EditorGUIUtility.TrTextContent("Rim Power", "Rim Power");
-            public static GUIContent denierText = EditorGUIUtility.TrTextContent("Denier", "Denier");
-            public static GUIContent specularText = EditorGUIUtility.TrTextContent("Specular", "Specular");
-            public static GUIContent warpAndWeftText = EditorGUIUtility.TrTextContent("Warp And Weft", "Warp And Weft");
-            public static GUIContent densityText = EditorGUIUtility.TrTextContent("density", "density");
-            public static GUIContent fabricScatterColorText = EditorGUIUtility.TrTextContent("Fabric Scatter Color", "Fabric Scatter Color");
-            public static GUIContent fabricScatterScaleText = EditorGUIUtility.TrTextContent("Fabric Scatter Scale", "Fabric Scatter Scale");
-            public static GUIContent anistroText = EditorGUIUtility.TrTextContent("Anitrospy", "Anitrospy");
-            public static GUIContent specMagText = EditorGUIUtility.TrTextContent("SpecMag", "SpecMag");
-            public static GUIContent judgeText = EditorGUIUtility.TrTextContent("Judge","Judge");
+            public static GUIContent rimPowerText = EditorGUIUtility.TrTextContent("织线透光度", "控制织线的透光度，随着值增加变透明");
+            public static GUIContent denierText = EditorGUIUtility.TrTextContent("织线密度", "控制因织线密度而产生的透明度变化");
+            public static GUIContent specularText = EditorGUIUtility.TrTextContent("高光噪声", "通过控制高光噪声");
+            public static GUIContent warpAndWeftText = EditorGUIUtility.TrTextContent("网格图", "控制表面的网格结构");
+            public static GUIContent densityText = EditorGUIUtility.TrTextContent("采样密度", "控制织线贴图的采样密度");
+            public static GUIContent fabricScatterColorText = EditorGUIUtility.TrTextContent("高光散射颜色", "控制高光散射的颜色");
+            public static GUIContent fabricScatterScaleText = EditorGUIUtility.TrTextContent("高光散射强度", "控制高光散射的强度");
+            public static GUIContent anistroText = EditorGUIUtility.TrTextContent("各向异性参数", "控制各向异性高光分布");
+            public static GUIContent specMagText = EditorGUIUtility.TrTextContent("各向异性高光强度", "控制各项异性高光的强度");
+            public static GUIContent judgeText = EditorGUIUtility.TrTextContent("织线样式","控制纱材质表面的直线样式");
 
             public static string primaryMapsText = "Main Maps";
             public static string secondaryMapsText = "Secondary Maps";
             public static string forwardText = "Forward Rendering Options";
             public static string renderingMode = "Rendering Mode";
             public static string advancedText = "Advanced Options";
-            public static string GauzeText = "gauze Options";
+            public static string GauzeText = "纱材质参数";
             public static readonly string[] blendNames = Enum.GetNames(typeof(BlendMode));
         }
 

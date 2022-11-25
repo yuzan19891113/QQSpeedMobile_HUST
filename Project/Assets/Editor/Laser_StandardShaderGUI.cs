@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-//#if UNITY_EDITOR
+#if UNITY_EDITOR
 namespace UnityEditor
 {
     internal class Laser_StandardShaderGUI : ShaderGUI
@@ -50,21 +50,21 @@ namespace UnityEditor
             public static GUIContent detailAlbedoText = EditorGUIUtility.TrTextContent("Detail Albedo x2", "Albedo (RGB) multiplied by 2");
             public static GUIContent detailNormalMapText = EditorGUIUtility.TrTextContent("Normal Map", "Normal Map");
 
-            public static GUIContent saturationText = EditorGUIUtility.TrTextContent("Saturation", "Saturation");
-            public static GUIContent brightnessText = EditorGUIUtility.TrTextContent("Brightness", "Brightness");
-            public static GUIContent curveTypeText = EditorGUIUtility.TrTextContent("CurveType", "CurveType");
-            public static GUIContent lightSpanText = EditorGUIUtility.TrTextContent("LightSpan", "LightSpan");
-            public static GUIContent lightOffsetText = EditorGUIUtility.TrTextContent("LightOffset", "LightOffset");
-            public static GUIContent hueMapText = EditorGUIUtility.TrTextContent("HueMap", "HueMap");
-            public static GUIContent lightOffsetMapText = EditorGUIUtility.TrTextContent("LightOffset_Map", "LightOffset_Map");
-            public static GUIContent useAnisoColorText = EditorGUIUtility.TrTextContent("UseAnisoColor", "UseAnisoColor");
-            public static GUIContent anisoMethodText = EditorGUIUtility.TrTextContent("AnisoMethod", "AnisoMethod");
-            public static GUIContent colorDirText = EditorGUIUtility.TrTextContent("ColorDir", "ColorDir");
-            public static GUIContent colorDirMapText = EditorGUIUtility.TrTextContent("ColorDirMap", "ColorDirMap");
+            public static GUIContent saturationText = EditorGUIUtility.TrTextContent("饱和度", "材质表面镭射颜色的饱和度");
+            public static GUIContent brightnessText = EditorGUIUtility.TrTextContent("明亮度", "材质表面镭射颜色的明亮度");
+            public static GUIContent curveTypeText = EditorGUIUtility.TrTextContent("视角映射类型", "通过切换选项，可以让原公式中的1-cos重新映射到sin，可以解决与自定义贴图搭配使用时，贴图颜色变化速率在实际表现中不均匀的问题");
+            public static GUIContent lightSpanText = EditorGUIUtility.TrTextContent("视角颜色变化", "随视角材质颜色变化的速度");
+            public static GUIContent lightOffsetText = EditorGUIUtility.TrTextContent("视角偏移", "为夹角为0的视角添加一个偏移量");
+            public static GUIContent hueMapText = EditorGUIUtility.TrTextContent("色相贴图", "自定义取色范围的色相贴图");
+            public static GUIContent lightOffsetMapText = EditorGUIUtility.TrTextContent("视角偏移贴图", "通过贴图的方式控制材质表面不同区域的视角偏移值，从而产生由不同镭射颜色构成的图案。");
+            public static GUIContent useAnisoColorText = EditorGUIUtility.TrTextContent("开启各向异性", "可以控制镭射颜色变化只出现在特定方向上");
+            public static GUIContent anisoMethodText = EditorGUIUtility.TrTextContent("控制方法", "控制各向异性的方法");
+            public static GUIContent colorDirText = EditorGUIUtility.TrTextContent("各向异性方向", "控制各向异性颜色的整体方向");
+            public static GUIContent colorDirMapText = EditorGUIUtility.TrTextContent("各向异性方向贴图", "控制各向异性方向的贴图");
 
             public static string primaryMapsText = "Main Maps";
             public static string secondaryMapsText = "Secondary Maps";
-            public static string laserText = "Laser Options";
+            public static string laserText = "镭射材质参数";
             public static string forwardText = "Forward Rendering Options";
             public static string renderingMode = "Rendering Mode";
             public static string advancedText = "Advanced Options";
@@ -247,8 +247,8 @@ namespace UnityEditor
                 GUILayout.Label(Styles.laserText, EditorStyles.boldLabel);
                 m_MaterialEditor.ShaderProperty(saturation, Styles.saturationText);
                 m_MaterialEditor.ShaderProperty(brightness, Styles.brightnessText);
-                m_MaterialEditor.ShaderProperty(curveType, "curve Type");
-                m_MaterialEditor.ShaderProperty(paramsMode, "Control Type");
+                m_MaterialEditor.ShaderProperty(curveType, "视角映射曲线类型");
+                m_MaterialEditor.ShaderProperty(paramsMode, "颜色控制类型");
                 if (((int)material.GetFloat("_ParamsMode") == 0)) //manual
                 {
                     m_MaterialEditor.ShaderProperty(lightSpan, Styles.lightSpanText);
@@ -567,4 +567,4 @@ namespace UnityEditor
         }
     }
 } // namespace UnityEditor
-//#endif
+#endif

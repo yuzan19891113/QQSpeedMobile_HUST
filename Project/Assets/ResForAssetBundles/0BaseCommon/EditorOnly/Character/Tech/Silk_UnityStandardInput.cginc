@@ -23,11 +23,12 @@ half4       _Color;
 half        _Cutoff;
 
 //half4       _SpecularColor;
-sampler2D   _FloatMap;
-float4      _FloatMap_ST;
+//sampler2D   _FloatMap;
+//float4      _FloatMap_ST;
 sampler2D   _NoiseMap;
 //sampler2D   _RampMap;
 half        _SpecularMag;
+//half        _Intensity;
 //half        _SpecularRange;
 half        _SpecularShift;
 half        _SpecularRotate;

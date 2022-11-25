@@ -61,7 +61,7 @@ namespace UnityEditor
             public static string forwardText = "Forward Rendering Options";
             public static string renderingMode = "Rendering Mode";
             public static string advancedText = "Advanced Options";
-            public static string GauzeText = "gauze Options";
+            public static string GauzeText = "É´²ÄÖÊ²ÎÊý";
             public static readonly string[] blendNames = Enum.GetNames(typeof(BlendMode));
         }
 

@@ -1,27 +1,9 @@
-// Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
-
-Shader "QF/Character/High/Tech/Character_Tech_Silk"
+Shader "RasterLaser_Standard"
 {
     Properties
     {
         _Color("Color", Color) = (1,1,1,1)
         _MainTex("Albedo", 2D) = "white" {}
-
-        _SpecularColor("高光颜色", Color) = (1,1,1,1)
-        [ToggleOff] _Specular2Enable("双向高光", Float) = 0.0
-        //[ToggleOff] _GlossEnable("光滑度贴图", Float) = 0.0
-        _SpecularColor2("第二层高光颜色", Color) = (1,1,1,1)
-        _NoiseMap("NoiseMap", 2D) = "white"{}
-        //_FloatMap("FloatMap", 2D) = "white" {}
-        //_GlossinessMap("GlossinessMap", 2D) = "black" {}
-        //_Intensity("Intensity", Range(0.0, 100.0)) = 1.0
-        _SpecularMag("高光强度", Range(0, 30)) = 1
-        _SpecularRange("高光平滑度", Range(0, 2)) = 1
-        _SpecularShift("高光位置偏移", Range(-10, 10)) = 0
-        _SpecularRotate("各向异性旋转偏移", Range(-20, 20)) = 0.0
-        _RampAniValue("各向异性系数", Range(-1, 1)) = 0.741
-        //_SmoothValue1("平滑指数1", Range(-2,0)) = -1
-        //_SmoothValue2("平滑指数2", Range(-1,1)) = 0
 
         _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
 
@@ -61,6 +43,15 @@ Shader "QF/Character/High/Tech/Character_Tech_Silk"
         [HideInInspector] _SrcBlend ("__src", Float) = 1.0
         [HideInInspector] _DstBlend ("__dst", Float) = 0.0
         [HideInInspector] _ZWrite ("__zw", Float) = 1.0
+
+        //Laser Config
+        _Saturation("Saturation", Range(0, 1)) = 0.5
+		_Brightness("Brightness", Range(0, 1)) = 0.5
+        //Ⱦɫ��
+		_LightSpan("LightSpan", Range(0.2, 5)) = 1
+		_LightOffset("LightOffset", Range(0, 1)) = 0
+        //
+        _LightOffset_Map("LightOffset_Map", 2D) = "black" {}
     }
 
     CGINCLUDE
@@ -82,19 +73,6 @@ Shader "QF/Character/High/Tech/Character_Tech_Silk"
 
             Blend [_SrcBlend] [_DstBlend]
             ZWrite [_ZWrite]
-            //Cull off
-
-            CGINCLUDE
-            //#define _Fabric
-
-            half4 _SpecularColor;
-            half4 _SpecularColor2;
-            half _Specular2Enable;
-            half _Intensity;
-            //sampler2D _GlossinessMap;
-            //half _GlossEnable;
-            //half  _FabricScatterScale;
-            ENDCG
 
             CGPROGRAM
             #pragma target 3.0
@@ -119,7 +97,7 @@ Shader "QF/Character/High/Tech/Character_Tech_Silk"
 
             #pragma vertex vertBase
             #pragma fragment fragBase
-            #include "Silk_UnityStandardCoreForward.cginc"
+            #include "RasterLaser_UnityStandardCoreForward.cginc"
 
             ENDCG
         }
@@ -155,7 +133,7 @@ Shader "QF/Character/High/Tech/Character_Tech_Silk"
 
             #pragma vertex vertAdd
             #pragma fragment fragAdd
-            #include "UnityStandardCoreForward.cginc"
+            #include "RasterLaser_UnityStandardCoreForward.cginc"
 
             ENDCG
         }
@@ -220,7 +198,7 @@ Shader "QF/Character/High/Tech/Character_Tech_Silk"
             #pragma vertex vertDeferred
             #pragma fragment fragDeferred
 
-            #include "UnityStandardCore.cginc"
+            #include "RasterLaser_UnityStandardCore.cginc"
 
             ENDCG
         }
@@ -373,6 +351,5 @@ Shader "QF/Character/High/Tech/Character_Tech_Silk"
 
 
     FallBack "VertexLit"
-    CustomEditor "Silk_StandardShaderGUI"
+    CustomEditor "RasterLaser_StandardShaderGUI"
 }
-

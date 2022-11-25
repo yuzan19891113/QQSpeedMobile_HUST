@@ -329,7 +329,7 @@ half Silk_BSSRDF(half3 diffColor, half3 specColor, half oneMinusReflectivity, ha
 }
 
 half4 Ramp_Anisotropy(half3 diffColor, half3 specColor, half oneMinusReflectivity, half smoothness, half alpha,
-    float3 normal, float3 viewDir, float3 tangent, float3 binormal, float3 tangent1, float3 binormal1, float anisotropic, float mag, half noise,
+    float3 normal, float3 viewDir, float3 tangent, float3 binormal, float anisotropic, float mag, half noise,
     UnityLight light, UnityIndirect gi)
 {
     half perceptualRoughness = SmoothnessToPerceptualRoughness (smoothness);
@@ -371,9 +371,11 @@ half4 Ramp_Anisotropy(half3 diffColor, half3 specColor, half oneMinusReflectivit
     // and 2) on engine side "Non-important" lights have to be divided by Pi too in cases when they are injected into ambient SH
     half roughness = PerceptualRoughnessToRoughness(perceptualRoughness);
 
-    fixed aspect = sqrt(1-anisotropic*0.9);                                         //aspect 将anisotropic参数重映射到[0.1,1]空间，确保aspect不为0,
-    half roughnesst = roughness*roughness*(1+anisotropic);
-    half roughnessb = roughness*roughness*(1-anisotropic);
+    //fixed aspect = sqrt(1-anisotropic*0.9);                                         //aspect 将anisotropic参数重映射到[0.1,1]空间，确保aspect不为0,
+    half roughnesst = roughness*roughness + roughness*roughness*anisotropic;
+    half roughnessb = roughness*roughness - roughness*roughness*anisotropic;
+    half roughnesst1 = roughness*roughness + roughness*roughness*anisotropic*0.9;
+    half roughnessb1 = roughness*roughness - roughness*roughness*anisotropic*0.9;
     //float aspect = pow(1.0 - anisotropic * 0.9, 2);
     //float roughnesst = max(0.001, roughness * roughness/aspect);                    //ax随着参数anisotropic的增加而增加
     //float roughnessb = max(0.001, roughness * roughness*aspect);                    //ay随着参数anisotropic的增加而减少，ax和ay在anisotropic值为0时相等
@@ -382,14 +384,14 @@ half4 Ramp_Anisotropy(half3 diffColor, half3 specColor, half oneMinusReflectivit
     // GGX with roughtness to 0 would mean no specular at all, using max(roughness, 0.002) here to match HDrenderloop roughtness remapping.
     roughness = max(roughness, 0.002);
     
-    half V = SmithJointGGXVisibilityTerm_Ani(dot(normal, light.dir), dot(normal, viewDir), dot(light.dir, tangent), dot(light.dir, binormal), dot(viewDir, tangent), dot(viewDir, binormal), roughnesst, roughnessb);
+    //half V = SmithJointGGXVisibilityTerm_Ani(dot(normal, light.dir), dot(normal, viewDir), dot(light.dir, tangent), dot(light.dir, binormal), dot(viewDir, tangent), dot(viewDir, binormal), roughnesst, roughnessb);
     //V *= SmithJointGGXVisibilityTerm_Ani(dot(normal, light.dir), dot(light.dir, tangent),dot(light.dir, binormal), roughnesst, roughnessb);
     half D = GGXTerm_Ani(th,bh,nh,roughnesst,roughnessb);
 
-    half V1 = SmithJointGGXVisibilityTerm (nl, nv, roughness);
-    half D1 = GGXTerm (nh, roughness);
-    half V2 = Vis_Cloth(nv, nl);
-    half D2 = GGXTerm_New(Pow4(roughness), nh);
+    half V = SmithJointGGXVisibilityTerm (nl, nv, roughness);
+    //half D1 = GGXTerm (nh, roughness);
+    //half V2 = Vis_Cloth(nv, nl);
+    //half D2 = GGXTerm_New(Pow4(roughness), nh);
 
 #else
     // Legacy
@@ -397,23 +399,15 @@ half4 Ramp_Anisotropy(half3 diffColor, half3 specColor, half oneMinusReflectivit
     half D = NDFBlinnPhongNormalizedTerm (nh, PerceptualRoughnessToSpecPower(perceptualRoughness));
 #endif
 
-    float specularTerm = V1 * D * UNITY_PI; // Torrance-Sparrow model, Fresnel is applied later
-    float specularTerm2 = V1 * GGXTerm_Ani(th,bh,nh,
-        roughness*roughness*(1+anisotropic*0.8),
-        roughness*roughness*(1-anisotropic*0.8))
-    *UNITY_PI;
-    float specularTerm3 = V1 * GGXTerm_Ani(th,bh,nh,
-        roughness*roughness*(1-anisotropic),
-        roughness*roughness*(1+anisotropic))
-    * UNITY_PI;
-    float specularTerm4 = V1 * GGXTerm_Ani(th,bh,nh,
-        roughness*roughness*(1-anisotropic*0.8),
-        roughness*roughness*(1+anisotropic*0.8))
-    *UNITY_PI;
+    float specularTerm = V * D * UNITY_PI; // Torrance-Sparrow model, Fresnel is applied later
+    float specularTerm2 = V * GGXTerm_Ani(th,bh,nh,roughnesst1,roughnessb1)*UNITY_PI;
+    float specularTerm3 = V * GGXTerm_Ani(th,bh,nh,roughnessb,roughnesst)*UNITY_PI;
+    float specularTerm4 = V * GGXTerm_Ani(th,bh,nh,roughnessb1,roughnesst1)*UNITY_PI;
 
     //specularTerm = any(specularTerm)?specularTerm:1;
     
     //specularTerm = min(5,pow(specularTerm, 3));
+    //mag *= light.intensity;
     specularTerm *= mag;
     specularTerm2 *= mag;
     specularTerm3 *= mag;
@@ -452,34 +446,51 @@ half4 Ramp_Anisotropy(half3 diffColor, half3 specColor, half oneMinusReflectivit
     specularTerm2 *= any(specColor) ? 1.0 : 0.0;
     specularTerm3 *= any(specColor) ? 1.0 : 0.0;
     specularTerm4 *= any(specColor) ? 1.0 : 0.0;
-    half Spec1 = nl*V1*D1*FresnelTerm(specColor, vh);
-    half Spec2 = V2*D2*FresnelTerm(specColor, vh);
+    //half Spec1 = nl*V1*D1*FresnelTerm(specColor, vh);
+    //half Spec2 = V2*D2*FresnelTerm(specColor, vh);
     //specularTerm = lerp(Spec1, Spec2, alpha);
 
     half3 finalcolor = _SpecularColor;
+    half3 finalcolor2 = _SpecularColor2;
 
-    half ramppos = saturate(specularTerm);
-    half2 pos=half2(saturate(D),2);
+    //half ramppos = saturate(specularTerm);
+    //half2 pos=half2(saturate(D),2);
     //finalcolor = tex2D(_RampMap, pos.xy);
 
     finalcolor *= noise;
-    half gray = 0.2125 * finalcolor.r + 0.7154 * finalcolor.g + 0.0721 * finalcolor.b;
-    half3 grayColor = half3(gray, gray, gray);
+    finalcolor2 *= noise;
+    //half gray = 0.2125 * light.color.r + 0.7154 * light.color.g + 0.0721 * light.color.b;
+    finalcolor.r *= light.color.r;
+    finalcolor.g *= light.color.g;
+    finalcolor.b *= light.color.b;
+    finalcolor2.r *= light.color.r;
+    finalcolor2.g *= light.color.g;
+    finalcolor2.b *= light.color.b;
+    //finalcolor *= saturate(gray.r);
+    //finalcolor2 *= saturate(gray.r);
+    //finalcolor = lerp(finalcolor,light.color,0.9);
+    //finalcolor2 = lerp(finalcolor2,light.color,0.9);
+    //half3 grayColor = half3(gray, gray, gray);
     //finalcolor = lerp(grayColor, finalcolor, mag);
-    half3 avgcolor = half3(0.5, 0.5, 0.5);
-    //finalcolor = lerp(avgcolor, finalcolor, 0.5);
-    finalcolor *= any(light.color)? 1.0 : 0 ;
+    //half3 avgcolor = half3(0.5, 0.5, 0.5);
+    //finalcolor *= any(light.color)? 1.0 : 0 ;
+    //finalcolor2 *= any(light.color)? 1.0 : 0.0;
     //light.color = any(light.color)? light.color : 0.5;
     //half temp = any(light.color)? 1 : 1 ;
 
     //specularTerm=0;
     //specularTerm = specularTerm>specularTerm2?specularTerm:specularTerm2;
+    if(_Specular2Enable){
+        specularTerm = (specularTerm+specularTerm3)/2;
+        specularTerm2 = (specularTerm2+specularTerm4)/2;
+    }
+    
     half grazingTerm = saturate(smoothness + (1-oneMinusReflectivity));
     half3 color =   diffColor * (gi.diffuse + light.color * diffuseTerm)
-                    + specularTerm2  * finalcolor * FresnelTerm(specColor, vh)
-                    + specularTerm4  * finalcolor * FresnelTerm(specColor, vh)
-                    + specularTerm3  * finalcolor * FresnelTerm(specColor, vh)
-                    + specularTerm  * finalcolor * FresnelTerm(specColor, vh)
+                    +  specularTerm2  * finalcolor2 * FresnelTerm(specColor, vh)
+                    //+  specularTerm4  * finalcolor2 * FresnelTerm(specColor, vh)
+                    //+  specularTerm3  * finalcolor * FresnelTerm(specColor, vh)
+                    +  specularTerm  * finalcolor * FresnelTerm(specColor, vh)
                     + surfaceReduction * gi.specular * FresnelLerp (specColor, grazingTerm, nv);
                     //+ specularTerm * _SpecularColor * (nl * 0.5 + 0.5) * FabricScatterFresnelLerp(nv, 1);
     
