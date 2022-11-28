@@ -53,7 +53,7 @@ namespace UnityEditor
             public static string forwardText = "Forward Rendering Options";
             public static string renderingMode = "Rendering Mode";
             public static string advancedText = "Advanced Options";
-            public static string SilkText = "Silk Options";
+            public static string SilkText = "丝绸高光";
             public static readonly string[] blendNames = Enum.GetNames(typeof(BlendMode));
         }
         public static class Plus

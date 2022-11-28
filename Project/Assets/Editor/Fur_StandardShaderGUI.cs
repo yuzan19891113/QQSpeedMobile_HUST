@@ -92,7 +92,7 @@ namespace UnityEditor
             public static string renderingMode = "Rendering Mode";
             public static string advancedText = "Advanced Options";
             //这里用于添加拓展材质选择
-            public static string fur_characteristic = "Fur Characteristic";
+            public static string fur_characteristic = "裘皮参数";
             public static string fur_control = "Fur Growth Control";
             //public static readonly string[] renderNames = Enum.GetNames(typeof(RenderingMode));
         }
@@ -283,10 +283,7 @@ namespace UnityEditor
                // m_MaterialEditor.ShaderProperty(FabricScatterColor, Styles.scattercolorText);
                 //m_MaterialEditor.ShaderProperty(FabricScatterScale, Styles.scatterscaleText);
                 EditorGUILayout.Space();
-                m_MaterialEditor.ShaderProperty(tipcolor, Styles.tipcolorText);
-                //m_MaterialEditor.ShaderProperty(tipcontrol, Styles.tipcontrolText);
-                //m_MaterialEditor.ShaderProperty(tipchoice, Styles.tipchoiceText);
-                m_MaterialEditor.ShaderProperty(tipLocate, Styles.tipLocateText);
+               
                 EditorGUILayout.Space();
                 DoSpecularMetallicArea();
                 DoNormalArea();
@@ -327,6 +324,10 @@ namespace UnityEditor
                 // Fur Properties
                 GUILayout.Label(Styles.fur_characteristic, EditorStyles.boldLabel);
                 EditorGUILayout.Space();
+                m_MaterialEditor.ShaderProperty(tipcolor, Styles.tipcolorText);
+                //m_MaterialEditor.ShaderProperty(tipcontrol, Styles.tipcontrolText);
+                //m_MaterialEditor.ShaderProperty(tipchoice, Styles.tipchoiceText);
+                m_MaterialEditor.ShaderProperty(tipLocate, Styles.tipLocateText);
                 m_MaterialEditor.TexturePropertySingleLine(Styles.layerMapText, layerMap);
                 m_MaterialEditor.TextureScaleOffsetProperty(layerMap);
                 m_MaterialEditor.ShaderProperty(furLength, Styles.furLengthText);
