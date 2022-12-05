@@ -1,0 +1,174 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: yarn_cloth
+  m_Shader: {fileID: 4800000, guid: 8ee59f3e9f66d2f4d80d9284ba98a915, type: 3}
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _DETAIL_MULX2 _NORMALMAP _SPECULAR2ENABLE_OFF
+    _USEANISOCOLOR_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AnisoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 8851328c9dde4ce4a9c29a1e8e083a4b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ColorDirMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 50, y: 50}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 2800000, guid: 33c4630b21faec4419fff006c53edae6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ForceMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FurGrowthMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HueMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Judge:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LayerTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LightOffset_Map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 286104db027e95e46937428e03f692d7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: ed6c26386a1b64a0ab1c3733e728a74b, type: 3}
+        m_Scale: {x: 50, y: 50}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Specular:
+        m_Texture: {fileID: 2800000, guid: ed6c26386a1b64a0ab1c3733e728a74b, type: 3}
+        m_Scale: {x: 50, y: 50}
+        m_Offset: {x: 0, y: 0}
+    - _TipLocateMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WarpAndWeft:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AO: 0.2
+    - _AnisoGloss1: 0.7
+    - _AnisoGloss2: 0.7
+    - _AnisoMethod: 0
+    - _AnisoSpec1: 3
+    - _AnisoSpec2: 3
+    - _Anistropy: -0.41
+    - _Brightness: 0.5
+    - _BumpScale: 1
+    - _ColorDir: 0
+    - _CurveType: 0
+    - _Cutoff: 0.5
+    - _CutoffEnd: 0
+    - _Denier: 1
+    - _Density: 34
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 10
+    - _EdgeFade: 0.4
+    - _FabricScatterScale: 0
+    - _ForceMapScale: 0.5
+    - _FurGrowth: 0.5
+    - _FurLength: 0.25
+    - _GlossMapScale: 1
+    - _Glossiness: 0.268
+    - _GlossyReflections: 1
+    - _GravityStrength: 0.25
+    - _LayerChoice: 0
+    - _LightOffset: 0
+    - _LightSpan: 1
+    - _Metallic: 0.105
+    - _Mode: 3
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _ParamsMode: 0
+    - _RampAniValue: 0.741
+    - _RenderChoice: 0
+    - _RimPower: 1
+    - _Saturation: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecMag: 4.5
+    - _Specular2Enable: 0
+    - _SpecularHighlights: 1
+    - _SpecularMag: 1
+    - _SpecularRange: 1
+    - _SpecularRotate: 0
+    - _SpecularShift: 0
+    - _SrcBlend: 1
+    - _TangentDir: 0
+    - _TangentShift1: 0
+    - _TangentShift2: 0
+    - _TipChoice: 0
+    - _TipControl: 5
+    - _UVSec: 0
+    - _UseAnisoColor: 0
+    - _ZWrite: 0
+    m_Colors:
+    - _Color: {r: 0.882353, g: 0.98823535, b: 0.9960785, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FabricScatterColor: {r: 1, g: 0.995283, b: 0.995283, a: 1}
+    - _Gravity: {r: 0, g: -1, b: 0, a: 0}
+    - _RotationSpot: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor1: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor2: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularColor: {r: 0.29803923, g: 0.68235296, b: 0.97647065, a: 1}
+    - _SpecularColor2: {r: 1, g: 1, b: 1, a: 1}
+    - _TipColor: {r: 1, g: 1, b: 1, a: 1}
