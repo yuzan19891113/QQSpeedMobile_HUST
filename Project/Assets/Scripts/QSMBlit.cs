@@ -59,7 +59,7 @@ public class QSMBlit : MonoBehaviour
 #endif
     }
 
-   // [ImageEffectTransprarentLast]
+   
     void OnRenderImage(RenderTexture sourceTexture, RenderTexture destTexture)
     {
         if (IsShowOverDrawState)
